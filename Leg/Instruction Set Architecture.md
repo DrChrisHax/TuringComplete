@@ -148,7 +148,29 @@ The result of the operation on source1 and source2 is written to dest.
 
 | 19 | mod | `dest = source1 % source2` |
 
-| 20–31 | — | Not implemented (behave as nop) |
+| 20–23 | — | Not implemented (behave as nop) |
+
+
+
+\### Function (Opcodes 24-32)
+
+These are used for function calls
+
+| Opcode | Name | Format | Description |
+
+|--------|------|--------|-------------|
+
+| 24 | call | `call curr\_addr x label` | Stores the current address + 4 and jumps to the function label |
+
+| 25 | ret | `ret x x x` | Jumps to the return address |
+
+| 26–31 | — | Not implemented |
+
+
+
+To avoid undefined behavior, only use the curr\_addr(6) register so that the function returns to the correct place.
+
+
 
 
 
@@ -224,7 +246,7 @@ If the condition is true, execution jumps to the label. If false, execution cont
 
 
 
-\### RAM (Opcodes 48–63)
+\### RAM (Opcodes 48–57)
 
 &#x20;
 
@@ -246,19 +268,39 @@ load address x dest      # dest = RAM\[address]
 
 |--------|------|--------|-------------|
 
-| 48 | save | `save address value x` | Writes value to RAM at address |
+| 48 | load | `load address x dest` | Reads RAM at address into dest |
 
-| 49 | load | `load address x dest` | Reads RAM at address into dest |
+| 49 | save | `save address value x` | Writes value to RAM at address |
 
-| 50–63 | — | — | Not implemented |
+| 50–55 | — | — | Not implemented |
 
-&#x20;
+| 56 | pop  | `pop x x dest` | Pops the top value off the stack |
+
+| 57 | push | `push source x x | Pushes a value onto the stack |
+
+| 58–63 | — | — | Not implemented |
+
+
+
+
 
 For both save and load, the address and value arguments follow the same immediate encoding rules - bit 7 for arg1 immediate, bit 6 for arg2 immediate.
 
 
 
 \---
+
+
+
+\### Other Commands
+
+| Opcode | Name | Format | Description |
+
+|--------|------|--------|-------------|
+
+| 196 | mv | `mv x x dest` | Moves a value to a register |
+
+| 64 | cpy | `cpy source x dest | Copys a register value to another register |
 
 &#x20;
 
@@ -296,6 +338,11 @@ gt r0 r1 my\_label
 
 
 
+\# Example Code
+
+
+
+\### For Loop
 
 
 
@@ -347,6 +394,17 @@ gt r0 r1 my\_label
 
 
 
+
+
+
+
+
+
+
+
+push\_and\_jump current\_add x function\_label
+
+pop\_and\_jump x x x
 
 
 
