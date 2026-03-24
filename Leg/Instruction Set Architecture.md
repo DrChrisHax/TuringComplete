@@ -187,22 +187,22 @@ cpy r0 to r3       # equivalent to cpy r0 0 r3
 
 ### For Loop
 ```
-# For(int i = 0; i < 32; ++i) {
-#	RAM[i] = input.Read();
-# }
-# For (int i = 0; i < 32; ++i) {
-#	output.Write(RAM[i]);
-# }
+# #include <iostream> 
+# int RAM[32];
+# for(int i = 0; i < 32; ++i)
+#	std::cin >> RAM[i];
+# for (int i = 0; i < 32; ++i)
+#	std::cout << RAM[i];
 
 mv 0 x r0 #i = 0
 label read
-save r0 input x #RAM[i] = input.Read()
+save r0 input x #std::cin >> RAM[i];
 add_i r0 1 r0 #++i
 lt_i r0 32 read
 
 mv 0 x r0 #i = 0
 label write
-load r0 x output #output.Write(RAM[i]);
+load r0 x output #std::cout << RAM[i];
 add_i r0 1 r0 #++i
 lt_i r0 32 write
 ```
