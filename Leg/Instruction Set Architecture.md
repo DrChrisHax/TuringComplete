@@ -85,7 +85,10 @@ These are used for function calls
 |--------|------|--------|-------------|
 | 24 | call | `call curr_addr x label` | Stores the current address + 4 and jumps to the function label |
 | 25 | ret | `ret x x x` | Jumps to the return address |
-| 26-31 | - | Not implemented |
+| 26 | call_eq_z | `call_eq_z curr_addr source label` | Calls the function if the register holds 0|
+| 27 | call_neq_z | `call_neq_z curr_addr source label` | Calls the function if the register does not hold 0 |
+| 26-30 | - | Not implemented |
+| 31 | halt | `halt` | Halts the program |
 
 To avoid undefined behavior, only use the curr\_addr(6) register so that the function returns to the correct place.
 
@@ -136,7 +139,7 @@ load address x dest      # dest = RAM[address]
 
 | Opcode | Name | Format | Description |
 |--------|------|--------|-------------|
-| 48 | load | `load address x dest` | Reads RAM at address into dest |
+| 48 | load | `load address to dest` | Reads RAM at address into dest |
 | 49 | save | `save address value x` | Writes value to RAM at address |
 | 50-55 | - | - | Not implemented |
 | 56 | pop  | `pop x x dest` | Pops the top value off the stack |
@@ -194,17 +197,24 @@ cpy r0 to r3       # equivalent to cpy r0 0 r3
 # for (int i = 0; i < 32; ++i)
 #	std::cout << RAM[i];
 
-mv 0 x r0 #i = 0
+mv 0 to r0 #i = 0
 label read
 save r0 input x #std::cin >> RAM[i];
 add_i r0 1 r0 #++i
 lt_i r0 32 read
 
-mv 0 x r0 #i = 0
+mv 0 to r0 #i = 0
 label write
-load r0 x output #std::cout << RAM[i];
+load r0 to output #std::cout << RAM[i];
 add_i r0 1 r0 #++i
 lt_i r0 32 write
+```
+
+### swap
+```
+xor r0 r1 r1
+xor r0 r1 r0
+xor r0 r1 r1
 ```
 
 
